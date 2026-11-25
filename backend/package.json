@@ -1,0 +1,27 @@
+{
+  "name": "ajudamais-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "API Node.js/Express do AjudaMais conectada ao MySQL",
+  "type": "module",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=18.17"
+  },
+  "scripts": {
+    "prestart": "node src/check-db.js",
+    "start": "node src/server.js",
+    "predev": "node src/check-db.js",
+    "dev": "node --watch src/server.js",
+    "db:check": "node src/check-db.js",
+    "test": "node --test tests/integration.test.js",
+    "check": "node --check src/server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mysql2": "^3.11.5",
+    "zod": "^3.24.1"
+  }
+}

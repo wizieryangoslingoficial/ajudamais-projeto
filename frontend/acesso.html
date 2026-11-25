@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AjudaMais — Conectando corações, transformando vidas</title>
+  <meta name="description" content="Doe com segurança pelo AjudaMais.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/base.css">
+</head>
+<body>
+  <main class="page">
+    <header class="brand">
+      <div class="brand__logo" role="img" aria-label="Logo AjudaMais"><svg class="brand__heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+      <h1 class="brand__title">AjudaMais</h1>
+      <p class="brand__subtitle">Conectando corações, transformando vidas</p>
+    </header>
+    <section class="card" aria-label="Acesso ao AjudaMais">
+      <div class="terms">
+        <input type="checkbox" id="terms-checkbox" class="terms__checkbox">
+        <p class="terms__text">
+          <label for="terms-checkbox">Li e concordo com os</label>
+          <a href="termos.html" class="terms__link">Termos de Uso e Política de Privacidade</a>
+          do AjudaMais.
+        </p>
+      </div>
+      <div class="card__actions">
+        <button type="button" class="btn btn--primary" id="btn-login" disabled>Entrar</button>
+        <button type="button" class="btn btn--outline" id="btn-signup" disabled>Criar conta</button>
+        <div class="divider" role="separator"><span class="divider__text">ou</span></div>
+        <button type="button" class="btn btn--ghost" id="btn-anonymous" disabled><svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.2 8.2-8 9-4.8-.8-8-4.5-8-9V6l8-3z" stroke-linejoin="round"/></svg> Doação anônima</button>
+      </div>
+    </section>
+    <p class="footer-note">Dados verificados via Gov.br · Suas informações estão seguras</p>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="js/toast.js"></script>
+  <script src="js/auth/config.js"></script>
+  <script src="js/auth/auth-service.js"></script>
+  <script src="js/auth/session.js"></script>
+  <script src="js/acesso.js"></script>
+</body>
+</html>

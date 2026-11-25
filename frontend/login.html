@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar — AjudaMais</title>
+  <meta name="description" content="Acesse sua conta AjudaMais com seu CPF e senha.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+  <main class="page">
+    <div class="auth">
+      <a href="acesso.html" class="auth__back">← Voltar</a>
+      <div class="auth__heading">
+        <div class="auth__logo" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+        <h1 class="auth__title">Entrar</h1>
+      </div>
+      <section class="card" aria-label="Entrar">
+        <form class="form" id="form" novalidate>
+        <div class="field">
+          <div class="field__row">
+            <label for="email" class="field__label">E-mail <span class="field__optional">(opcional)</span></label>
+          </div>
+          <div class="field__control">
+            <input id="email" name="email" type="email" class="field__input" placeholder="seu@email.com" autocomplete="email">
+          </div>
+          <span class="field__error" id="email-error" hidden></span>
+        </div>
+        <div class="field">
+          <div class="field__row">
+            <label for="cpf" class="field__label">CPF</label>
+          </div>
+          <div class="field__control">
+            <input id="cpf" name="cpf" type="text" class="field__input" placeholder="000.000.000-00" autocomplete="off" inputmode="numeric">
+          </div>
+          <span class="field__error" id="cpf-error" hidden></span>
+        </div>
+        <div class="field">
+          <div class="field__row">
+            <label for="password" class="field__label">Senha</label>
+          <a href="esqueci-senha.html" class="field__inline-link">Esqueci minha senha</a>
+          </div>
+          <div class="field__control">
+            <input id="password" name="password" type="password" class="field__input field__input--icon" placeholder="Sua senha" autocomplete="current-password">
+          <button type="button" class="field__toggle" data-toggle="password" aria-label="Mostrar senha"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="eye-off" d="M4 4l16 16" style="display:none"/></svg></button>
+          </div>
+          <span class="field__error" id="password-error" hidden></span>
+        </div>
+          <button type="submit" class="btn btn--solid">Entrar</button>
+          <div class="auth__links">
+            <a href="esqueci-senha.html" class="auth__link-muted">Esqueci minha senha</a>
+            <a href="recuperar-conta.html" class="auth__link-strong">Recuperar conta</a>
+          </div>
+          <p class="auth__switch">Não tem conta? <a href="cadastro.html" class="auth__link-strong">Criar conta</a></p>
+        </form>
+      </section>
+    </div>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="js/validators.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/auth/config.js"></script>
+  <script src="js/auth/auth-service.js"></script>
+  <script src="js/auth/session.js"></script>
+  <script src="js/field.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

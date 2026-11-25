@@ -1,0 +1,872 @@
+const icons = {
+  heart: '<path d="M20.8 8.7c0 5.4-8.8 10.4-8.8 10.4S3.2 14.1 3.2 8.7A4.7 4.7 0 0 1 12 6.5a4.7 4.7 0 0 1 8.8 2.2Z"/>',
+  home: '<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v6H9v6H4a1 1 0 0 1-1-1V10Z"/>',
+  dollar: '<path d="M12 2v20M17 6.5c-.8-.9-2.3-1.5-4.2-1.5-2.7 0-4.3 1.2-4.3 3s1.4 2.7 4.4 3.5c3 .8 4.4 1.8 4.4 3.7s-1.7 3.2-4.6 3.2c-2 0-3.6-.6-4.7-1.8"/>',
+  box: '<path d="m21 8-9-5-9 5 9 5 9-5ZM3 8v8l9 5 9-5V8M12 13v8"/>',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',
+  logout: '<path d="M10 17l5-5-5-5M15 12H3M21 19V5a2 2 0 0 0-2-2h-6"/>',
+  user: '<circle cx="12" cy="8" r="3.5"/><path d="M5 21a7 7 0 0 1 14 0"/>',
+  trend: '<path d="m3 17 6-6 4 4 8-9M15 6h6v6"/>',
+  shield: '<path d="M12 3 5 6v5c0 4.4 2.9 8.4 7 10 4.1-1.6 7-5.6 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
+  zap: '<path d="m13 2-9 12h7l-1 8 9-12h-7l1-8Z"/>',
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  chat: '<path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.3 8.3 0 0 1-3.5-.8L4 20l1.4-3.7A7.1 7.1 0 0 1 4.5 12 7.5 7.5 0 0 1 12 4.5a7.5 7.5 0 0 1 8 7Z"/>',
+  close: '<path d="m6 6 12 12M18 6 6 18"/>',
+  menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+  card: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>',
+  transfer: '<path d="M4 14h16M4 10h16M7 6l5-4 5 4M17 18l-5 4-5-4"/>',
+  pix: '<rect x="6" y="3" width="12" height="18" rx="2"/><path d="M12 17v.01"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  food: '<path d="M18 2v6a3 3 0 0 1-3 3h-3v7a2 2 0 0 1-2 2h0a2 2 0 0 1-2-2v-7H5a3 3 0 0 1-3-3V2h2v4h1V2h2v4h1V2h2v4h1V2h2v4h1V2h2z"/>',
+  clothes: '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M9 2v4a3 3 0 0 0 6 0V2"/>',
+  bed: '<path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/>',
+  hygiene: '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  minus: '<path d="M5 12h14"/>',
+  mapPin: '<path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/>',
+}
+
+function icon(name, className = '') {
+  return `<svg class="icon ${className}" viewBox="0 0 24 24" aria-hidden="true">${icons[name] || ''}</svg>`
+}
+
+const fallbackDonations = [
+  { initials: 'M', name: 'Maria Silva', detail: 'Dinheiro • R$ 100', time: '5 min atrás' },
+  { initials: 'J', name: 'João Santos', detail: 'Alimentos • 10 cestas básicas', time: '15 min atrás' },
+  { initials: 'A', name: 'Ana Costa', detail: 'Roupas • 25 peças', time: '1 hora atrás' },
+  { initials: 'P', name: 'Pedro Oliveira', detail: 'Dinheiro • R$ 250', time: '2 horas atrás' },
+  { initials: 'C', name: 'Carla Souza', detail: 'Cobertores • 15 unidades', time: '3 horas atrás' },
+]
+
+function renderDonationRows(list) {
+  return list.map((donation) => `
+    <article class="donation-row">
+      <div class="donor-avatar" aria-hidden="true">${donation.initials || (donation.name ? donation.name[0].toUpperCase() : 'D')}</div>
+      <div class="donation-info">
+        <strong>${donation.name || 'Doador'}</strong>
+        <span>${donation.detail || donation.descricao || ''}</span>
+      </div>
+      <time>${donation.time || 'Recente'}</time>
+    </article>
+  `).join('')
+}
+
+let activeSection = 'Início'
+let selectedAmount = 0
+let selectedPayment = 'card'
+let donationSuccess = false
+let successData = null
+
+// Doar Itens State - All counters start at 0
+let itemCategory = 'Alimentos'
+let itemCounts = {
+  // Alimentos
+  'Arroz': 0,
+  'Feijão': 0,
+  'Macarrão': 0,
+  'Óleo': 0,
+  'Açúcar': 0,
+  'Leite': 0,
+  'Café': 0,
+  'Enlatados': 0,
+  // Roupas
+  'Camisetas': 0,
+  'Calças': 0,
+  'Jaquetas': 0,
+  'Sapatos': 0,
+  'Meias': 0,
+  'Roupas Infantis': 0,
+  // Cobertores e Cama
+  'Cobertores': 0,
+  'Lençóis': 0,
+  'Travesseiros': 0,
+  'Edredons': 0,
+  'Toalhas': 0,
+  // Higiene
+  'Sabonete': 0,
+  'Shampoo': 0,
+  'Pasta de dente': 0,
+  'Escova de dente': 0,
+  'Papel higiênico': 0,
+  'Fraldas': 0
+}
+
+let itemSuccess = false
+let itemSuccessData = null
+
+// Necessidades State
+let necessidadesFilter = 'todas' // 'todas', 'urgentes', 'verificadas'
+
+// Preenchida com os dados reais de GET /api/requests (nada fixo).
+let necessidadesList = []
+let stats = null
+let recentDonations = null
+let pendingRequestId = null
+let pendingNeedTitle = ''
+
+function renderApp(usuario) {
+  const userName = usuario && usuario.nome ? usuario.nome : 'Visitante'
+  const userInitial = userName.charAt(0).toUpperCase()
+  const authButtons = usuario
+    ? `
+      <button class="profile-button" type="button" data-action="profile" aria-label="Abrir perfil de ${userName}">
+        <span class="profile-avatar">${userInitial}</span>
+        <span>${userName}</span>
+        ${icon('user', 'profile-icon')}
+      </button>
+      <button class="logout-button" type="button" data-action="logout" data-logout>
+        ${icon('logout')}
+        <span>Sair</span>
+      </button>
+    `
+    : `
+      <a class="profile-button" href="acesso.html" style="text-decoration:none;">
+        <span class="profile-avatar">E</span>
+        <span>Entrar / Cadastrar</span>
+        ${icon('user', 'profile-icon')}
+      </a>
+    `
+
+  const headerHtml = `
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="index.html" aria-label="AjudaMais, voltar ao início">
+          <span class="brand-mark">${icon('heart')}</span>
+          <span class="brand-copy">
+            <strong>AjudaMais</strong>
+            <small>Conectando corações, transformando vidas</small>
+          </span>
+        </a>
+
+        <div class="header-actions">
+          ${authButtons}
+          <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+            ${icon('menu')}
+          </button>
+        </div>
+      </div>
+    </header>
+  `
+
+  const navHtml = `
+    <nav class="dashboard-nav" aria-label="Navegação principal">
+      <button class="nav-link ${activeSection === 'Início' ? 'is-active' : ''}" type="button" data-section="Início">
+        ${icon('home')}
+        <span>Início</span>
+      </button>
+      <button class="nav-link ${activeSection === 'Doar Dinheiro' ? 'is-active' : ''}" type="button" data-section="Doar Dinheiro">
+        ${icon('dollar')}
+        <span>Doar Dinheiro</span>
+      </button>
+      <button class="nav-link ${activeSection === 'Doar Itens' ? 'is-active' : ''}" type="button" data-section="Doar Itens">
+        ${icon('box')}
+        <span>Doar Itens</span>
+      </button>
+      <button class="nav-link ${activeSection === 'Necessidades' ? 'is-active' : ''}" type="button" data-section="Necessidades">
+        ${icon('users')}
+        <span>Necessidades</span>
+      </button>
+    </nav>
+  `
+
+  let mainContent = ''
+
+  if (activeSection === 'Início') {
+    mainContent = `
+      <section class="welcome-banner" aria-labelledby="welcome-title">
+        <h1 id="welcome-title">Bem-vindo ao AjudaMais${usuario ? ', ' + userName.split(' ')[0] : ''}!</h1>
+        <p>Sua generosidade transforma vidas. Veja o impacto que estamos fazendo juntos.</p>
+      </section>
+
+      <section class="stats-grid" aria-label="Resumo do impacto">
+        <article class="stat-card">
+          <div class="stat-icon stat-icon-green">${icon('dollar')}</div>
+          <span class="stat-label">Doações em Dinheiro</span>
+          <strong class="stat-value">R$ 45.230</strong>
+          <span class="stat-change">+12% este mês</span>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon stat-icon-blue">${icon('box')}</div>
+          <span class="stat-label">Itens Doados</span>
+          <strong class="stat-value">1.247</strong>
+          <span class="stat-change">+8% este mês</span>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon stat-icon-pink">${icon('users')}</div>
+          <span class="stat-label">Pessoas Ajudadas</span>
+          <strong class="stat-value">892</strong>
+          <span class="stat-change">+15% este mês</span>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon stat-icon-orange">${icon('trend')}</div>
+          <span class="stat-label">Impacto Total</span>
+          <strong class="stat-value">3.456</strong>
+          <span class="stat-change">Vidas transformadas</span>
+        </article>
+      </section>
+
+      <section class="content-card donations-card" aria-labelledby="donations-title">
+        <div class="section-heading">
+          <h2 id="donations-title">Doações Recentes</h2>
+        </div>
+        <div class="donation-list" id="donation-list">${renderDonationRows(fallbackDonations)}</div>
+      </section>
+
+      <section class="difference-banner" aria-labelledby="difference-title">
+        <div>
+          <h2 id="difference-title">Faça a Diferença Hoje!</h2>
+          <p>Cada doação, seja em dinheiro ou itens, ajuda a transformar a vida de alguém que precisa.</p>
+        </div>
+        <button class="primary-button" type="button" data-action="goto-donate">
+          Doar Agora
+          ${icon('arrow')}
+        </button>
+      </section>
+
+      <section class="content-card how-card" aria-labelledby="how-title">
+        <div class="section-heading">
+          <h2 id="how-title">Como funciona o AjudaMais</h2>
+        </div>
+        <div class="how-grid">
+          <article class="how-item">
+            <div class="how-icon how-icon-blue">${icon('heart')}</div>
+            <h3>Escolha como ajudar</h3>
+            <p>Doe dinheiro via Pix ou transferência, ou selecione itens como alimentos, roupas e cobertores para enviar diretamente a quem precisa.</p>
+          </article>
+          <article class="how-item">
+            <div class="how-icon how-icon-purple">${icon('shield')}</div>
+            <h3>Verificação segura</h3>
+            <p>Os dados dos beneficiários são verificados via Gov.br, garantindo que as doações cheguem a pessoas realmente em situação de vulnerabilidade.</p>
+          </article>
+          <article class="how-item">
+            <div class="how-icon how-icon-green">${icon('zap')}</div>
+            <h3>Impacto direto</h3>
+            <p>Sem intermediários desnecessários. Sua doação vai direto para a pessoa indicada — você pode acompanhar o status em tempo real.</p>
+          </article>
+        </div>
+      </section>
+    `
+  } else if (activeSection === 'Doar Dinheiro') {
+    if (donationSuccess) {
+      mainContent = `
+        <div class="content-card" style="padding: 40px; text-align: center; margin-top: 25px;">
+          <div style="width: 64px; height: 64px; background: #e6f9f0; color: #00a965; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 20px;">
+            ${icon('check')}
+          </div>
+          <h2 style="font-size: 24px; color: #172033; margin-bottom: 16px;">Doação aprovada com sucesso! ❤️</h2>
+          <p style="font-size: 15px; line-height: 1.6; color: #45536b; max-width: 600px; margin: 0 auto 24px;">
+            Agradecemos imensamente pela sua contribuição! Sua generosidade faz a diferença e ajuda a transformar vidas. Obrigado por fazer parte dessa iniciativa!
+          </p>
+          <div style="background: #f6f8ff; padding: 16px; border-radius: 12px; max-width: 400px; margin: 0 auto 24px; text-align: left; font-size: 13px; color: #344056;">
+            <p><strong>Valor doado:</strong> R$ ${successData.amount.toFixed(2).replace('.', ',')}</p>
+            <p><strong>Doador:</strong> ${successData.name}</p>
+            <p><strong>Método:</strong> ${successData.paymentMethod === 'card' ? 'Cartão de Crédito' : successData.paymentMethod === 'transfer' ? 'Transferência Bancária' : 'PIX'}</p>
+          </div>
+          <p style="font-size: 16px; font-weight: 600; color: #00a965; margin-bottom: 24px;">Sua doação faz a diferença!</p>
+          <button class="primary-button" type="button" id="btn-new-donation" style="margin: 0 auto; background: #3154f4; color: #fff;">Fazer Nova Doação</button>
+        </div>
+      `
+    } else {
+      mainContent = `
+        <div class="content-card" style="margin-top: 25px; overflow: hidden;">
+          <div style="background: #00a965; color: #fff; padding: 28px 32px;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+              ${icon('dollar', '')}
+              <h2 style="font-size: 22px; font-weight: 700; margin: 0;">Doar Dinheiro</h2>
+            </div>
+            <p style="font-size: 14px; opacity: 0.9; margin: 0;">Sua contribuição financeira permite comprar itens essenciais e ajudar quem mais precisa.</p>
+          </div>
+
+          <form id="donation-form" style="padding: 32px;" novalidate>
+            <div style="margin-bottom: 28px;">
+              <label style="display: block; font-weight: 600; font-size: 14px; color: #172033; margin-bottom: 12px;">Escolha o valor da doação</label>
+              <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px;" class="preset-grid">
+                <button type="button" class="preset-btn ${selectedAmount === 20 ? 'is-selected' : ''}" data-val="20" style="padding: 12px; border: 1px solid #dfe6f0; border-radius: 10px; background: ${selectedAmount === 20 ? '#f2f5ff' : '#fff'}; color: ${selectedAmount === 20 ? '#3154f4' : '#172033'}; font-weight: 600; cursor: pointer;">R$ 20</button>
+                <button type="button" class="preset-btn ${selectedAmount === 50 ? 'is-selected' : ''}" data-val="50" style="padding: 12px; border: 1px solid #dfe6f0; border-radius: 10px; background: ${selectedAmount === 50 ? '#f2f5ff' : '#fff'}; color: ${selectedAmount === 50 ? '#3154f4' : '#172033'}; font-weight: 600; cursor: pointer;">R$ 50</button>
+                <button type="button" class="preset-btn ${selectedAmount === 100 ? 'is-selected' : ''}" data-val="100" style="padding: 12px; border: 1px solid #dfe6f0; border-radius: 10px; background: ${selectedAmount === 100 ? '#f2f5ff' : '#fff'}; color: ${selectedAmount === 100 ? '#3154f4' : '#172033'}; font-weight: 600; cursor: pointer;">R$ 100</button>
+                <button type="button" class="preset-btn ${selectedAmount === 200 ? 'is-selected' : ''}" data-val="200" style="padding: 12px; border: 1px solid #dfe6f0; border-radius: 10px; background: ${selectedAmount === 200 ? '#f2f5ff' : '#fff'}; color: ${selectedAmount === 200 ? '#3154f4' : '#172033'}; font-weight: 600; cursor: pointer;">R$ 200</button>
+                <button type="button" class="preset-btn ${selectedAmount === 500 ? 'is-selected' : ''}" data-val="500" style="padding: 12px; border: 1px solid #dfe6f0; border-radius: 10px; background: ${selectedAmount === 500 ? '#f2f5ff' : '#fff'}; color: ${selectedAmount === 500 ? '#3154f4' : '#172033'}; font-weight: 600; cursor: pointer;">R$ 500</button>
+              </div>
+              <label for="custom-amount" style="display: block; font-size: 13px; color: #45536b; margin-bottom: 8px;">Ou digite outro valor:</label>
+              <input type="text" id="custom-amount" placeholder="R$ 0,00" value="${selectedAmount ? 'R$ ' + selectedAmount.toFixed(2).replace('.', ',') : ''}" style="width: 100%; height: 46px; padding: 0 16px; border: 1px solid #dfe6f0; border-radius: 10px; font-size: 15px;">
+            </div>
+
+            <div style="margin-bottom: 28px;">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px; color: #00a965;">
+                ${icon('shield')}
+                <h3 style="font-size: 15px; font-weight: 600; margin: 0;">Informações do Doador</h3>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;" class="form-grid">
+                <div>
+                  <label for="donor-name" style="display: block; font-size: 13px; font-weight: 600; color: #172033; margin-bottom: 6px;">Nome Completo *</label>
+                  <input type="text" id="donor-name" required value="${usuario && usuario.nome ? usuario.nome : ''}" placeholder="Seu nome completo" style="width: 100%; height: 46px; padding: 0 14px; border: 1px solid #dfe6f0; border-radius: 10px; font-size: 14px;">
+                </div>
+                <div>
+                  <label for="donor-cpf" style="display: block; font-size: 13px; font-weight: 600; color: #172033; margin-bottom: 6px;">CPF *</label>
+                  <input type="text" id="donor-cpf" required value="${usuario && usuario.cpf ? usuario.cpf : ''}" placeholder="000.000.000-00" style="width: 100%; height: 46px; padding: 0 14px; border: 1px solid #dfe6f0; border-radius: 10px; font-size: 14px;">
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;" class="form-grid">
+                <div>
+                  <label for="donor-email" style="display: block; font-size: 13px; font-weight: 600; color: #172033; margin-bottom: 6px;">E-mail *</label>
+                  <input type="email" id="donor-email" required value="${usuario && usuario.email ? usuario.email : ''}" placeholder="seu@email.com" style="width: 100%; height: 46px; padding: 0 14px; border: 1px solid #dfe6f0; border-radius: 10px; font-size: 14px;">
+                </div>
+                <div>
+                  <label for="donor-phone" style="display: block; font-size: 13px; font-weight: 600; color: #172033; margin-bottom: 6px;">Telefone *</label>
+                  <input type="text" id="donor-phone" required placeholder="(00) 00000-0000" style="width: 100%; height: 46px; padding: 0 14px; border: 1px solid #dfe6f0; border-radius: 10px; font-size: 14px;">
+                </div>
+              </div>
+              <div style="background: #f2f5ff; border: 1px solid #dce5ff; padding: 12px 16px; border-radius: 10px; font-size: 12px; color: #3154f4; display: flex; align-items: center; gap: 10px;">
+                ${icon('shield')}
+                <span>Seus dados serão verificados automaticamente para garantir a segurança da transação.</span>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 32px;">
+              <label style="display: block; font-weight: 600; font-size: 14px; color: #172033; margin-bottom: 12px;">Método de Pagamento</label>
+              <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;" class="pay-grid">
+                <button type="button" class="pay-btn ${selectedPayment === 'card' ? 'is-selected' : ''}" data-pay="card" style="padding: 20px 16px; border: 2px solid ${selectedPayment === 'card' ? '#00a965' : '#dfe6f0'}; border-radius: 12px; background: #fff; cursor: pointer; text-align: center;">
+                  <div style="color: #00a965; margin-bottom: 8px; display: grid; place-items: center;">${icon('card')}</div>
+                  <span style="font-size: 13px; font-weight: 600; color: #172033;">Cartão de Crédito</span>
+                </button>
+                <button type="button" class="pay-btn ${selectedPayment === 'transfer' ? 'is-selected' : ''}" data-pay="transfer" style="padding: 20px 16px; border: 2px solid ${selectedPayment === 'transfer' ? '#00a965' : '#dfe6f0'}; border-radius: 12px; background: #fff; cursor: pointer; text-align: center;">
+                  <div style="color: #00a965; margin-bottom: 8px; display: grid; place-items: center;">${icon('transfer')}</div>
+                  <span style="font-size: 13px; font-weight: 600; color: #172033;">Transferência</span>
+                </button>
+                <button type="button" class="pay-btn ${selectedPayment === 'pix' ? 'is-selected' : ''}" data-pay="pix" style="padding: 20px 16px; border: 2px solid ${selectedPayment === 'pix' ? '#00a965' : '#dfe6f0'}; border-radius: 12px; background: #fff; cursor: pointer; text-align: center;">
+                  <div style="color: #00a965; margin-bottom: 8px; display: grid; place-items: center;">${icon('pix')}</div>
+                  <span style="font-size: 13px; font-weight: 600; color: #172033;">PIX</span>
+                </button>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 20px; border-top: 1px solid #dfe6f0; flex-wrap: wrap; gap: 16px;">
+              <div>
+                <span style="font-size: 13px; color: #45536b; display: block;">Total a doar:</span>
+                <strong style="font-size: 24px; color: #00a965; font-weight: 700;">R$ ${selectedAmount.toFixed(2).replace('.', ',')}</strong>
+              </div>
+              <button type="submit" style="background: #00a965; color: #fff; border: 0; padding: 0 32px; height: 50px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(0, 169, 101, 0.25);">Confirmar Doação</button>
+            </div>
+            <p style="text-align: center; font-size: 11px; color: #77839a; margin-top: 16px;">Ao confirmar, você concorda com nossos termos de uso e política de privacidade.</p>
+          </form>
+        </div>
+      `
+    }
+  } else if (activeSection === 'Doar Itens') {
+    if (itemSuccess) {
+      mainContent = `
+        <div class="content-card" style="padding: 40px; text-align: center; margin-top: 25px;">
+          <div style="width: 64px; height: 64px; background: #e6f9f0; color: #00a965; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 20px;">
+            ${icon('check')}
+          </div>
+          <h2 style="font-size: 24px; color: #172033; margin-bottom: 16px;">Doação de Itens Agendada com Sucesso! 📦</h2>
+          <p style="font-size: 15px; line-height: 1.6; color: #45536b; max-width: 600px; margin: 0 auto 24px;">
+            Agradecemos imensamente pela sua generosidade! Entraremos em contato em até 24 horas para agendar a coleta dos itens no endereço informado.
+          </p>
+          <div style="background: #f6f8ff; padding: 16px; border-radius: 12px; max-width: 450px; margin: 0 auto 24px; text-align: left; font-size: 13px; color: #344056;">
+            <p><strong>Doador:</strong> ${itemSuccessData.name}</p>
+            <p><strong>Endereço:</strong> ${itemSuccessData.address}, ${itemSuccessData.city}</p>
+            <p><strong>Total de itens:</strong> ${itemSuccessData.totalCount} unidades</p>
+          </div>
+          <p style="font-size: 16px; font-weight: 600; color: #3154f4; margin-bottom: 24px;">Sua doação faz toda a diferença!</p>
+          <button class="primary-button" type="button" id="btn-new-item-donation" style="margin: 0 auto; background: #3154f4; color: #fff;">Fazer Nova Doação de Itens</button>
+        </div>
+      `
+    } else {
+      const catItems = {
+        'Alimentos': ['Arroz', 'Feijão', 'Macarrão', 'Óleo', 'Açúcar', 'Leite', 'Café', 'Enlatados'],
+        'Roupas': ['Camisetas', 'Calças', 'Jaquetas', 'Sapatos', 'Meias', 'Roupas Infantis'],
+        'Cobertores e Cama': ['Cobertores', 'Lençóis', 'Travesseiros', 'Edredons', 'Toalhas'],
+        'Higiene': ['Sabonete', 'Shampoo', 'Pasta de dente', 'Escova de dente', 'Papel higiênico', 'Fraldas']
+      }
+
+      const currentItemsList = catItems[itemCategory] || []
+      
+      let totalItems = 0
+      let summaryRows = []
+      Object.keys(itemCounts).forEach(k => {
+        let cnt = itemCounts[k]
+        if (cnt > 0) {
+          totalItems += cnt
+          summaryRows.push(`<div style="display: flex; justify-content: space-between; font-size: 13px; color: #45536b; padding: 4px 0;"><span>${k}</span><span>${cnt} unidade${cnt > 1 ? 's' : ''}</span></div>`)
+        }
+      })
+
+      mainContent = `
+        <div class="content-card" style="margin-top: 25px; overflow: hidden;">
+          <div style="background: #3154f4; color: #fff; padding: 28px 32px;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+              ${icon('box', '')}
+              <h2 style="font-size: 22px; font-weight: 700; margin: 0;">Doar Itens</h2>
+            </div>
+            <p style="font-size: 14px; opacity: 0.9; margin: 0;">Doe itens essenciais como alimentos, roupas, cobertores e produtos de higiene.</p>
+          </div>
+
+          <div style="padding: 32px;">
+            <div style="margin-bottom: 28px;">
+              <label style="display: block; font-weight: 600; font-size: 14px; color: #172033; margin-bottom: 12px;">Selecione a categoria</label>
+              <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;" class="item-cat-grid">
+                <button type="button" class="item-cat-btn ${itemCategory === 'Alimentos' ? 'is-selected' : ''}" data-cat="Alimentos" style="padding: 20px 12px; border: 2px solid ${itemCategory === 'Alimentos' ? '#3154f4' : '#dfe6f0'}; border-radius: 12px; background: ${itemCategory === 'Alimentos' ? '#f2f5ff' : '#fff'}; cursor: pointer; text-align: center;">
+                  <div style="color: #ff6f0b; margin-bottom: 8px; display: grid; place-items: center;">${icon('food')}</div>
+                  <span style="font-size: 13px; font-weight: 600; color: #172033;">Alimentos</span>
+                </button>
+                <button type="button" class="item-cat-btn ${itemCategory === 'Roupas' ? 'is-selected' : ''}" data-cat="Roupas" style="padding: 20px 12px; border: 2px solid ${itemCategory === 'Roupas' ? '#3154f4' : '#dfe6f0'}; border-radius: 12px; background: ${itemCategory === 'Roupas' ? '#f2f5ff' : '#fff'}; cursor: pointer; text-align: center;">
+                  <div style="color: #3154f4; margin-bottom: 8px; display: grid; place-items: center;">${icon('clothes')}</div>
+                  <span style="font-size: 13px; font-weight: 600; color: #172033;">Roupas</span>
+                </button>
+                <button type="button" class="item-cat-btn ${itemCategory === 'Cobertores e Cama' ? 'is-selected' : ''}" data-cat="Cobertores e Cama" style="padding: 20px 12px; border: 2px solid ${itemCategory === 'Cobertores e Cama' ? '#3154f4' : '#dfe6f0'}; border-radius: 12px; background: ${itemCategory === 'Cobertores e Cama' ? '#f2f5ff' : '#fff'}; cursor: pointer; text-align: center;">
+                  <div style="color: #a338ef; margin-bottom: 8px; display: grid; place-items: center;">${icon('bed')}</div>
+                  <span style="font-size: 13px; font-weight: 600; color: #172033;">Cobertores e Cama</span>
+                </button>
+                <button type="button" class="item-cat-btn ${itemCategory === 'Higiene' ? 'is-selected' : ''}" data-cat="Higiene" style="padding: 20px 12px; border: 2px solid ${itemCategory === 'Higiene' ? '#3154f4' : '#dfe6f0'}; border-radius: 12px; background: ${itemCategory === 'Higiene' ? '#f2f5ff' : '#fff'}; cursor: pointer; text-align: center;">
+                  <div style="color: #0abf68; margin-bottom: 8px; display: grid; place-items: center;">${icon('hygiene')}</div>
+                  <span style="font-size: 13px; font-weight: 600; color: #172033;">Higiene</span>
+                </button>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 28px; background: #fafbfd; border: 1px solid #e3e9f2; border-radius: 12px; padding: 20px;">
+              <h3 style="font-size: 15px; font-weight: 600; color: #172033; margin-bottom: 16px;">Itens de ${itemCategory}</h3>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;" class="item-counter-grid">
+                ${currentItemsList.map(itemName => `
+                  <div style="background: #fff; border: 1px solid #dfe6f0; border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-size: 14px; font-weight: 500; color: #172033;">${itemName}</span>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                      <button type="button" class="item-minus-btn" data-item="${itemName}" style="width: 30px; height: 30px; border-radius: 50%; background: #f2f5ff; color: #3154f4; display: grid; place-items: center; cursor: pointer; border: 0;">${icon('minus')}</button>
+                      <span style="font-size: 15px; font-weight: 600; min-width: 20px; text-align: center;">${itemCounts[itemName] || 0}</span>
+                      <button type="button" class="item-plus-btn" data-item="${itemName}" style="width: 30px; height: 30px; border-radius: 50%; background: #3154f4; color: #fff; display: grid; place-items: center; cursor: pointer; border: 0;">${icon('plus')}</button>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <div style="margin-bottom: 28px; background: #f2f5ff; border: 1px solid #dce5ff; border-radius: 12px; padding: 20px;">
+              <h3 style="font-size: 15px; font-weight: 600; color: #3154f4; margin-bottom: 12px;">Resumo da Doação</h3>
+              <div style="min-height: 40px; margin-bottom: 12px;">
+                ${summaryRows.length > 0 ? summaryRows.join('') : '<span style="font-size: 13px; color: #77839a;">Nenhum item selecionado ainda.</span>'}
+              </div>
+              <div style="border-top: 1px solid #dce5ff; padding-top: 12px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 14px; font-weight: 600; color: #172033;">Total de itens:</span>
+                <strong style="font-size: 16px; font-weight: 700; color: #3154f4;">${totalItems}</strong>
+              </div>
+            </div>
+
+            <form id="item-donation-form" novalidate>
+              <div style="margin-bottom: 28px;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px; color: #3154f4;">
+                  ${icon('mapPin')}
+                  <h3 style="font-size: 15px; font-weight: 600; margin: 0;">Informações para Coleta</h3>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;" class="form-grid">
+                  <div>
+                    <label for="item-donor-name" style="display: block; font-size: 13px; font-weight: 600; color: #172033; margin-bottom: 6px;">Nome Completo *</label>
+                    <input type="text" id="item-donor-name" required value="${usuario && usuario.nome ? usuario.nome : ''}" placeholder="Seu nome completo" style="width: 100%; height: 46px; padding: 0 14px; border: 1px solid #dfe6f0; border-radius: 10px; font-size: 14px;">
+                  </div>
+                  <div>
+                    <label for="item-donor-phone" style="display: block; font-size: 13px; font-weight: 600; color: #172033; margin-bottom: 6px;">Telefone *</label>
+                    <input type="text" id="item-donor-phone" required placeholder="(00) 00000-0000" style="width: 100%; height: 46px; padding: 0 14px; border: 1px solid #dfe6f0; border-radius: 10px; font-size: 14px;">
+                  </div>
+                </div>
+                <div style="margin-bottom: 16px;">
+                  <label for="item-donor-email" style="display: block; font-size: 13px; font-weight: 600; color: #172033; margin-bottom: 6px;">E-mail *</label>
+                  <input type="email" id="item-donor-email" required value="${usuario && usuario.email ? usuario.email : ''}" placeholder="seu@email.com" style="width: 100%; height: 46px; padding: 0 14px; border: 1px solid #dfe6f0; border-radius: 10px; font-size: 14px;">
+                </div>
+                <div style="margin-bottom: 16px;">
+                  <label for="item-donor-address" style="display: block; font-size: 13px; font-weight: 600; color: #172033; margin-bottom: 6px;">Endereço para Coleta *</label>
+                  <input type="text" id="item-donor-address" required placeholder="Rua, número, complemento" style="width: 100%; height: 46px; padding: 0 14px; border: 1px solid #dfe6f0; border-radius: 10px; font-size: 14px;">
+                </div>
+                <div style="margin-bottom: 16px;">
+                  <label for="item-donor-city" style="display: block; font-size: 13px; font-weight: 600; color: #172033; margin-bottom: 6px;">Cidade *</label>
+                  <input type="text" id="item-donor-city" required placeholder="Sua cidade" style="width: 100%; height: 46px; padding: 0 14px; border: 1px solid #dfe6f0; border-radius: 10px; font-size: 14px;">
+                </div>
+                <div style="background: #f2f5ff; border: 1px solid #dce5ff; padding: 12px 16px; border-radius: 10px; font-size: 12px; color: #3154f4; display: flex; align-items: center; gap: 10px;">
+                  ${icon('mapPin')}
+                  <span>Entraremos em contato em até 24 horas para agendar a coleta dos itens.</span>
+                </div>
+              </div>
+
+              <div style="text-align: center; padding-top: 20px; border-top: 1px solid #dfe6f0;">
+                <button type="submit" style="background: #3154f4; color: #fff; border: 0; width: 100%; height: 50px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(49, 84, 244, 0.25);">Confirmar Doação de ${totalItems} ${totalItems === 1 ? 'Item' : 'Itens'}</button>
+                <p style="font-size: 12px; color: #77839a; margin-top: 16px;">Nossa equipe verificará os itens no momento da coleta.</p>
+              </div>
+            </form>
+          </div>
+        </div>
+      `
+    }
+  } else if (activeSection === 'Necessidades') {
+    // Filter necessidades
+    const filteredList = necessidadesList.filter(item => {
+      if (necessidadesFilter === 'urgentes') return item.urgente
+      if (necessidadesFilter === 'verificadas') return item.verificado
+      return true
+    })
+
+    mainContent = `
+      <div class="content-card" style="margin-top: 25px; padding: 32px;">
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 22px; font-weight: 700; color: #172033; margin-bottom: 8px;">Necessidades Cadastradas</h2>
+          <p style="font-size: 14px; color: #45536b;">Veja quem precisa de ajuda e como você pode fazer a diferença diretamente.</p>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap;">
+          <button type="button" class="filter-tab ${necessidadesFilter === 'todas' ? 'is-active-tab' : ''}" data-filter="todas" style="padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; border: ${necessidadesFilter === 'todas' ? '0' : '1px solid #dfe6f0'}; background: ${necessidadesFilter === 'todas' ? '#a338ef' : '#fff'}; color: ${necessidadesFilter === 'todas' ? '#fff' : '#45536b'};">Todas (${necessidadesList.length})</button>
+          <button type="button" class="filter-tab ${necessidadesFilter === 'urgentes' ? 'is-active-tab' : ''}" data-filter="urgentes" style="padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; border: ${necessidadesFilter === 'urgentes' ? '0' : '1px solid #dfe6f0'}; background: ${necessidadesFilter === 'urgentes' ? '#a338ef' : '#fff'}; color: ${necessidadesFilter === 'urgentes' ? '#fff' : '#45536b'};">Urgentes (${necessidadesList.filter(i => i.urgente).length})</button>
+          <button type="button" class="filter-tab ${necessidadesFilter === 'verificadas' ? 'is-active-tab' : ''}" data-filter="verificadas" style="padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; border: ${necessidadesFilter === 'verificadas' ? '0' : '1px solid #dfe6f0'}; background: ${necessidadesFilter === 'verificadas' ? '#a338ef' : '#fff'}; color: ${necessidadesFilter === 'verificadas' ? '#fff' : '#45536b'};">Verificadas (${necessidadesList.filter(i => i.verificado).length})</button>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          ${filteredList.map(item => `
+            <div style="background: #fff; border: 1px solid #e1e7f0; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                <div>
+                  <h3 style="font-size: 18px; font-weight: 700; color: #172033; margin-bottom: 4px;">${item.title}</h3>
+                  <div style="display: flex; align-items: center; gap: 12px; font-size: 13px; color: #77839a;">
+                    <span>📍 ${item.location}</span>
+                    <span>🕒 ${item.time}</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  ${item.verificado ? '<span style="background: #e6f9f0; color: #00a965; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 4px;">✓ Verificado</span>' : ''}
+                  ${item.urgente ? '<span style="background: #fee7e8; color: #e5484d; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 4px;">! Urgente</span>' : ''}
+                </div>
+              </div>
+
+              <p style="font-size: 14px; color: #45536b; margin-bottom: 16px; line-height: 1.5;">${item.description}</p>
+
+              <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;">
+                ${item.tags.map(tag => `<span style="background: #f2f5ff; color: #3154f4; font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 8px;">${tag}</span>`).join('')}
+              </div>
+
+              <div style="display: flex; gap: 12px; align-items: center;">
+                <button type="button" class="btn-quero-ajudar" data-need-id="${item.id}" style="flex: 1; height: 46px; background: linear-gradient(90deg, #a338ef, #e90070); color: #fff; border: 0; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(163, 56, 239, 0.25);">Quero Ajudar</button>
+                <button type="button" class="btn-ver-detalhes" data-need-id="${item.id}" style="padding: 0 20px; height: 46px; background: #f2f5ff; color: #3154f4; border: 1px solid #dce5ff; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer;">Ver Detalhes</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div style="margin-top: 32px; background: #f2f5ff; border: 1px solid #dce5ff; padding: 20px; border-radius: 12px; display: flex; gap: 16px; align-items: flex-start;">
+          <div style="color: #3154f4; margin-top: 2px;">${icon('shield')}</div>
+          <div>
+            <h4 style="font-size: 15px; font-weight: 600; color: #172033; margin-bottom: 4px;">Como funciona a verificação?</h4>
+            <p style="font-size: 13px; color: #45536b; line-height: 1.5; margin: 0;">Todas as necessidades marcadas como "Verificadas" passaram por um processo de validação onde nossa equipe confirma a identidade e a situação da pessoa ou instituição. Isso garante que sua doação chegue para quem realmente precisa. A verificação é feita através de documentos, visitas presenciais e contato telefônico.</p>
+          </div>
+        </div>
+      </div>
+    `
+  }
+
+  document.querySelector('#app').innerHTML = `
+    ${headerHtml}
+    <main>
+      <div class="page-shell">
+        ${navHtml}
+        ${mainContent}
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 AjudaMais - Facilitando o acesso a recursos básicos para pessoas necessitadas</p>
+      <span>Desenvolvido com <b aria-label="amor">♥</b> para fazer a diferença</span>
+    </footer>
+
+    <a class="cookie-button" href="termos.html" style="display:inline-flex;align-items:center;text-decoration:none;">Termos de Uso e Privacidade</a>
+    <button class="chat-button" type="button" data-action="chat" aria-label="Abrir ajuda">
+      ${icon('chat')}
+    </button>
+    <aside class="chat-panel" aria-live="polite" aria-hidden="true">
+      <div class="chat-header">
+        <div>
+          <strong>AjudaMais</strong>
+          <span>Estamos aqui para ajudar</span>
+        </div>
+        <button type="button" data-action="close-chat" aria-label="Fechar ajuda">${icon('close')}</button>
+      </div>
+      <p>Olá! Como podemos ajudar você hoje?</p>
+      <button type="button" class="chat-option" data-action="chat-message">Tenho uma dúvida ${icon('arrow')}</button>
+    </aside>
+    <div class="toast" role="status" aria-live="polite"></div>
+  `
+
+  bindEvents(usuario)
+  if (activeSection === 'Início') {
+    carregarDoacoesDaApi()
+  }
+}
+
+function carregarDoacoesDaApi() {
+  if (typeof AJUDAMAIS_CONFIG === 'undefined') return
+  fetch(AJUDAMAIS_CONFIG.apiBaseUrl + '/donations')
+    .then((res) => res.json())
+    .then((json) => {
+      if (json && json.ok && Array.isArray(json.dados) && json.dados.length > 0) {
+        const container = document.getElementById('donation-list')
+        if (container) container.innerHTML = renderDonationRows(json.dados)
+      }
+    })
+    .catch(() => {})
+}
+
+function bindEvents(usuario) {
+  const toast = document.querySelector('.toast')
+  let toastTimer
+
+  function showToast(message) {
+    if (!toast) return
+    toast.textContent = message
+    toast.classList.add('is-visible')
+    window.clearTimeout(toastTimer)
+    toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 3200)
+  }
+
+  function closeMobileMenu() {
+    const nav = document.querySelector('.dashboard-nav')
+    const toggle = document.querySelector('.menu-toggle')
+    if (nav) nav.classList.remove('is-open')
+    if (toggle) toggle.setAttribute('aria-expanded', 'false')
+  }
+
+  document.querySelectorAll('.nav-link').forEach((link) => {
+    link.addEventListener('click', () => {
+      activeSection = link.dataset.section
+      donationSuccess = false
+      itemSuccess = false
+      renderApp(usuario)
+    })
+  })
+
+  const menuToggle = document.querySelector('.menu-toggle')
+  if (menuToggle) {
+    menuToggle.addEventListener('click', (event) => {
+      const button = event.currentTarget
+      const nav = document.querySelector('.dashboard-nav')
+      const isOpen = nav.classList.toggle('is-open')
+      button.setAttribute('aria-expanded', String(isOpen))
+    })
+  }
+
+  const gotoDonateBtn = document.querySelector('[data-action="goto-donate"]')
+  if (gotoDonateBtn) {
+    gotoDonateBtn.addEventListener('click', () => {
+      activeSection = 'Doar Dinheiro'
+      renderApp(usuario)
+    })
+  }
+
+  // Preset buttons (Dinheiro)
+  document.querySelectorAll('.preset-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      selectedAmount = Number(btn.dataset.val)
+      renderApp(usuario)
+    })
+  })
+
+  const customInput = document.getElementById('custom-amount')
+  if (customInput) {
+    customInput.addEventListener('input', (e) => {
+      let val = e.target.value.replace(/\D/g, '')
+      selectedAmount = val ? Number(val) / 100 : 0
+    })
+    customInput.addEventListener('blur', () => {
+      renderApp(usuario)
+    })
+  }
+
+  // Payment methods (Dinheiro)
+  document.querySelectorAll('.pay-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      selectedPayment = btn.dataset.pay
+      renderApp(usuario)
+    })
+  })
+
+  const donationForm = document.getElementById('donation-form')
+  if (donationForm) {
+    donationForm.addEventListener('submit', (e) => {
+      e.preventDefault()
+      if (selectedAmount <= 0) {
+        showToast('Por favor, escolha ou digite um valor para a doação.')
+        return
+      }
+      const name = document.getElementById('donor-name').value.trim()
+      const cpf = document.getElementById('donor-cpf').value.trim()
+      const email = document.getElementById('donor-email').value.trim()
+      if (!name || !cpf || !email) {
+        showToast('Por favor, preencha todos os campos obrigatórios do doador.')
+        return
+      }
+      successData = {
+        amount: selectedAmount,
+        name: name,
+        paymentMethod: selectedPayment
+      }
+      donationSuccess = true
+      renderApp(usuario)
+      showToast('Doação aprovada com sucesso!')
+    })
+  }
+
+  const newDonationBtn = document.getElementById('btn-new-donation')
+  if (newDonationBtn) {
+    newDonationBtn.addEventListener('click', () => {
+      donationSuccess = false
+      selectedAmount = 0
+      renderApp(usuario)
+    })
+  }
+
+  // Doar Itens Events
+  document.querySelectorAll('.item-cat-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      itemCategory = btn.dataset.cat
+      renderApp(usuario)
+    })
+  })
+
+  document.querySelectorAll('.item-plus-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      let item = btn.dataset.item
+      itemCounts[item] = (itemCounts[item] || 0) + 1
+      renderApp(usuario)
+    })
+  })
+
+  document.querySelectorAll('.item-minus-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      let item = btn.dataset.item
+      if ((itemCounts[item] || 0) > 0) {
+        itemCounts[item]--
+        renderApp(usuario)
+      }
+    })
+  })
+
+  const itemDonationForm = document.getElementById('item-donation-form')
+  if (itemDonationForm) {
+    itemDonationForm.addEventListener('submit', (e) => {
+      e.preventDefault()
+      let totalCount = 0
+      Object.keys(itemCounts).forEach(k => totalCount += itemCounts[k])
+      if (totalCount <= 0) {
+        showToast('Por favor, selecione ao menos um item para doar.')
+        return
+      }
+      const name = document.getElementById('item-donor-name').value.trim()
+      const phone = document.getElementById('item-donor-phone').value.trim()
+      const email = document.getElementById('item-donor-email').value.trim()
+      const address = document.getElementById('item-donor-address').value.trim()
+      const city = document.getElementById('item-donor-city').value.trim()
+      if (!name || !phone || !email || !address || !city) {
+        showToast('Por favor, preencha todos os campos obrigatórios para a coleta.')
+        return
+      }
+      itemSuccessData = {
+        name,
+        address,
+        city,
+        totalCount
+      }
+      itemSuccess = true
+      renderApp(usuario)
+      showToast('Doação de itens agendada com sucesso!')
+    })
+  }
+
+  const newItemDonationBtn = document.getElementById('btn-new-item-donation')
+  if (newItemDonationBtn) {
+    newItemDonationBtn.addEventListener('click', () => {
+      itemSuccess = false
+      Object.keys(itemCounts).forEach(k => itemCounts[k] = 0)
+      renderApp(usuario)
+    })
+  }
+
+  // Necessidades Filters and Actions
+  document.querySelectorAll('.filter-tab').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      necessidadesFilter = tab.dataset.filter
+      renderApp(usuario)
+    })
+  })
+
+  document.querySelectorAll('.btn-quero-ajudar').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const needId = Number(btn.dataset.needId)
+      const need = necessidadesList.find(n => n.id === needId)
+      if (need) {
+        // Direct to appropriate page based on need category
+        if (need.category === 'Alimentos' || need.category === 'Higiene' || need.category === 'Roupas') {
+          activeSection = 'Doar Itens'
+          itemCategory = need.category === 'Higiene' ? 'Higiene' : need.category === 'Roupas' ? 'Roupas' : 'Alimentos'
+          // Pre-select 1 unit of first item in category
+          if (itemCategory === 'Alimentos') itemCounts['Arroz'] = 1
+          else if (itemCategory === 'Roupas') itemCounts['Camisetas'] = 1
+          else if (itemCategory === 'Higiene') itemCounts['Sabonete'] = 1
+        } else {
+          activeSection = 'Doar Dinheiro'
+          selectedAmount = 50
+        }
+        renderApp(usuario)
+        showToast(`Redirecionando para doação para: ${need.title}`)
+      }
+    })
+  })
+
+  document.querySelectorAll('.btn-ver-detalhes').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const needId = Number(btn.dataset.needId)
+      const need = necessidadesList.find(n => n.id === needId)
+      if (need) {
+        showToast(`Detalhes de ${need.title}: ${need.description}`)
+      }
+    })
+  })
+
+  const profileBtn = document.querySelector('[data-action="profile"]')
+  if (profileBtn) {
+    profileBtn.addEventListener('click', () => {
+      showToast(`Logado como ${usuario.nome} (${usuario.email})`)
+    })
+  }
+
+  const chatMsgBtn = document.querySelector('[data-action="chat-message"]')
+  if (chatMsgBtn) {
+    chatMsgBtn.addEventListener('click', () => {
+      showToast('Atendimento conectado! Envie sua dúvida para suporte@ajudamais.org.')
+    })
+  }
+
+  const chatBtn = document.querySelector('[data-action="chat"]')
+  if (chatBtn) {
+    chatBtn.addEventListener('click', () => {
+      const panel = document.querySelector('.chat-panel')
+      if (panel) {
+        panel.classList.add('is-open')
+        panel.setAttribute('aria-hidden', 'false')
+      }
+    })
+  }
+
+  const closeChatBtn = document.querySelector('[data-action="close-chat"]')
+  if (closeChatBtn) {
+    closeChatBtn.addEventListener('click', () => {
+      const panel = document.querySelector('.chat-panel')
+      if (panel) {
+        panel.classList.remove('is-open')
+        panel.setAttribute('aria-hidden', 'true')
+      }
+    })
+  }
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeMobileMenu()
+      const panel = document.querySelector('.chat-panel')
+      if (panel) panel.classList.remove('is-open')
+    }
+  })
+}
+
+AuthService.usuarioAtual().then(renderApp)

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperar conta — AjudaMais</title>
+  <meta name="description" content="Recupere o acesso à sua conta AjudaMais.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+  <main class="page">
+    <div class="auth">
+      <a href="login.html" class="auth__back">← Voltar</a>
+      <div class="auth__heading">
+        <div class="auth__logo" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+        <h1 class="auth__title">Recuperar conta</h1>
+      </div>
+      <section class="card" aria-label="Recuperar conta">
+        <form class="form" id="form" novalidate>
+          <p class="auth__lead">Informe o e-mail ou celular cadastrado para recuperar seu acesso.</p>
+          <div class="segmented" role="radiogroup" aria-label="Forma de recuperação">
+            <button type="button" role="radio" aria-checked="true" class="segmented__option" data-method="email">E-mail</button>
+            <button type="button" role="radio" aria-checked="false" class="segmented__option" data-method="phone">Celular</button>
+          </div>
+          <div class="field">
+            <input id="contact" class="field__input" aria-label="E-mail" type="email" inputmode="email" autocomplete="email" placeholder="seu@email.com">
+            <span class="field__error" id="contact-error" hidden></span>
+          </div>
+          <button type="submit" class="btn btn--solid">Enviar código de verificação</button>
+        </form>
+      </section>
+    </div>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="js/validators.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/auth/config.js"></script>
+  <script src="js/auth/auth-service.js"></script>
+  <script src="js/auth/session.js"></script>
+  <script src="js/field.js"></script>
+  <script src="js/recuperar-conta.js"></script>
+</body>
+</html>

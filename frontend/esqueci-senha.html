@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperar senha — AjudaMais</title>
+  <meta name="description" content="Redefina sua senha do AjudaMais.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+  <main class="page">
+    <div class="auth">
+      <a href="login.html" class="auth__back">← Voltar ao login</a>
+      <div class="auth__heading">
+        <div class="auth__logo" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+        <h1 class="auth__title">Recuperar senha</h1>
+      </div>
+      <section class="card" aria-label="Recuperar senha">
+        <form class="form" id="form" novalidate>
+          <p class="auth__lead">Informe o e-mail e o CPF cadastrados e defina uma nova senha. Por segurança, todas as sessões abertas serão encerradas.</p>
+        <div class="field">
+          <div class="field__row">
+            <label for="email" class="field__label">E-mail</label>
+          </div>
+          <div class="field__control">
+            <input id="email" name="email" type="email" class="field__input" placeholder="seu@email.com" autocomplete="email">
+          </div>
+          <span class="field__error" id="email-error" hidden></span>
+        </div>
+        <div class="field">
+          <div class="field__row">
+            <label for="cpf" class="field__label">CPF</label>
+          </div>
+          <div class="field__control">
+            <input id="cpf" name="cpf" type="text" class="field__input" placeholder="000.000.000-00" autocomplete="off" inputmode="numeric">
+          </div>
+          <span class="field__error" id="cpf-error" hidden></span>
+        </div>
+        <div class="field">
+          <div class="field__row">
+            <label for="password" class="field__label">Nova senha</label>
+          </div>
+          <div class="field__control">
+            <input id="password" name="password" type="password" class="field__input field__input--icon" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+            <button type="button" class="field__toggle" data-toggle="password" aria-label="Mostrar senha"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="eye-off" d="M4 4l16 16" style="display:none"/></svg></button>
+          </div>
+          <span class="field__error" id="password-error" hidden></span>
+        </div>
+        <div class="field">
+          <div class="field__row">
+            <label for="confirm" class="field__label">Confirmar nova senha</label>
+          </div>
+          <div class="field__control">
+            <input id="confirm" name="confirm" type="password" class="field__input" placeholder="Repita a nova senha" autocomplete="new-password">
+          </div>
+          <span class="field__error" id="confirm-error" hidden></span>
+        </div>
+          <button type="submit" class="btn btn--solid">Redefinir senha</button>
+          <p class="auth__switch">Não sabe o e-mail da conta? <a href="recuperar-conta.html" class="auth__link-strong">Recuperar conta</a></p>
+        </form>
+      </section>
+    </div>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="js/validators.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/auth/config.js"></script>
+  <script src="js/auth/auth-service.js"></script>
+  <script src="js/auth/session.js"></script>
+  <script src="js/field.js"></script>
+  <script src="js/esqueci-senha.js"></script>
+</body>
+</html>

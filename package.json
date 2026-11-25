@@ -1,0 +1,30 @@
+{
+  "name": "ajudamais-vercel",
+  "private": true,
+  "version": "1.0.0",
+  "description": "AjudaMais — site estático + API Express em função serverless",
+  "type": "module",
+  "scripts": {
+    "start": "node backend/src/server.js",
+    "dev": "node --watch backend/src/server.js",
+    "db:check": "node backend/src/check-db.js",
+    "test": "node --test backend/tests/integration.test.js",
+    "test:fluxo": "node backend/tests/fluxo-site.test.mjs",
+    "test:seguranca": "node backend/tests/security.test.mjs",
+    "test:ui": "node backend/tests/ui-fluxo.test.mjs",
+    "test:botoes": "node backend/tests/ui-botoes.test.mjs",
+    "test:persistencia": "node backend/tests/persistencia.test.mjs",
+    "test:responsivo": "node backend/tests/responsividade.test.mjs",
+    "postinstall": "npm --prefix backend install --omit=dev --silent || true"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mysql2": "^3.11.5",
+    "zod": "^3.24.1"
+  },
+  "engines": {
+    "node": ">=18.17"
+  }
+}

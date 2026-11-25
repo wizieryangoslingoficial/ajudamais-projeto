@@ -1,0 +1,103 @@
+/* ==========================================================
+   AjudaMais - Telas de autenticação (Entrar / Criar conta)
+   ========================================================== */
+:root {
+  --color-field-bg: #f8f9fb;
+  --color-field-border: #e4e6ec;
+  --color-label: #1e1e2d;
+  --color-placeholder: #9a9db0;
+  --color-muted-text: #6b6b78; /* >= 4.5:1 sobre branco e sobre #f3f4f8 */
+  --color-info-bg: #eef4ff;
+  --color-info-text: #1f5cff;
+}
+
+.auth { width: 100%; max-width: var(--card-width); }
+
+.auth__back {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 13px; color: #f7f7f7; text-decoration: none; /* contraste >= 4.8:1 no gradiente */
+  margin-bottom: 24px; border-radius: 4px;
+}
+.auth__back:hover { color: var(--color-white); }
+.auth__back:focus-visible { outline: 2px solid var(--color-white); outline-offset: 2px; }
+
+.auth__heading { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.auth__logo {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: rgba(255,255,255,0.25);
+  display: flex; align-items: center; justify-content: center;
+}
+.auth__logo svg { width: 24px; height: 24px; fill: var(--color-white); }
+.auth__title { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; color: var(--color-white); }
+
+.form { display: flex; flex-direction: column; gap: 16px; }
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field__row { display: flex; justify-content: space-between; align-items: baseline; }
+.field__label { font-size: 13px; font-weight: 600; color: var(--color-label); }
+.field__optional { font-weight: 400; color: var(--color-muted-text); }
+.field__inline-link { font-size: 11px; color: var(--color-primary); text-decoration: none; }
+.field__inline-link:hover { text-decoration: underline; }
+.field__control { position: relative; }
+.field__input {
+  width: 100%; height: 50px; padding: 0 16px;
+  font-family: inherit; font-size: 15px; color: var(--color-text);
+  background: var(--color-field-bg);
+  border: 1px solid var(--color-field-border); border-radius: 14px;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.field__input--icon { padding-right: 48px; }
+.field__input::placeholder { color: var(--color-placeholder); }
+.field__input:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(79,61,245,0.15); }
+.field__input[aria-invalid="true"] { border-color: #e5484d; }
+.field__error { font-size: 12px; color: #d13438; }
+.field__toggle {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  border: none; background: transparent; color: var(--color-placeholder);
+  border-radius: 8px; cursor: pointer;
+}
+.field__toggle:hover { color: var(--color-text); }
+.field__toggle:focus-visible { outline: 2px solid var(--color-primary); }
+.field__toggle svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+
+.btn--solid {
+  border: none; font-weight: 500; color: var(--color-white);
+  background: linear-gradient(90deg, #1f5cff, var(--color-primary));
+}
+.btn--solid:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(79,61,245,0.3); }
+.btn--solid:disabled { opacity: .7; transform: none; }
+
+.auth__links {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 16px; border-bottom: 1px solid var(--color-divider);
+}
+.auth__link-muted { font-size: 14px; color: var(--color-muted-text); text-decoration: none; }
+.auth__link-muted:hover { color: var(--color-text); }
+.auth__link-strong { font-size: 15px; font-weight: 600; color: var(--color-primary); text-decoration: none; }
+.auth__link-strong:hover { color: var(--color-primary-dark); }
+.auth__switch { text-align: center; font-size: 13px; color: var(--color-text); }
+
+.notice {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 12px 14px; border-radius: 12px;
+  background: var(--color-info-bg); color: var(--color-info-text);
+  font-size: 11px; line-height: 16px;
+}
+.notice svg { width: 16px; height: 16px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.8; }
+
+/* ---------- Texto de apoio nos cards ---------- */
+.auth__lead { font-size: 13px; line-height: 20px; color: var(--color-text); }
+
+/* ---------- Seletor segmentado (E-mail / Celular) ---------- */
+.segmented {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--color-field-border); border-radius: 10px; overflow: hidden;
+}
+.segmented__option {
+  height: 36px; border: none; background: var(--color-white);
+  font-family: inherit; font-size: 13px; font-weight: 500; color: var(--color-text); cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+.segmented__option[aria-checked="true"] { background: var(--color-primary); color: var(--color-white); font-weight: 600; }
+.segmented__option:focus-visible { outline: 2px solid var(--color-primary); outline-offset: -2px; }
+
