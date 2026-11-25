@@ -51,6 +51,7 @@ function validateSignup(d) {
   if (!d.name.trim()) e.name = "Informe seu nome completo.";
   if (!isValidEmail(d.email)) e.email = "Informe um e-mail válido.";
   if (!isValidCpf(d.cpf)) e.cpf = "Informe um CPF válido.";
+  if (!d.phone || !isValidPhone(d.phone)) e.phone = "Informe um telefone celular válido com DDD.";
   if (d.password.length < MIN_PASSWORD_LENGTH) e.password = "A senha precisa ter no mínimo " + MIN_PASSWORD_LENGTH + " caracteres.";
   if (d.confirm !== d.password) e.confirm = "As senhas não coincidem.";
   return e;

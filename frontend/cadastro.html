@@ -19,13 +19,13 @@
         <h1 class="auth__title">Criar conta</h1>
       </div>
       <section class="card" aria-label="Criar conta">
-        <form class="form" id="form" novalidate>
+        <form class="form" id="form" novalidate autocomplete="off">
         <div class="field">
           <div class="field__row">
             <label for="name" class="field__label">Nome completo</label>
           </div>
           <div class="field__control">
-            <input id="name" name="name" type="text" class="field__input" placeholder="Seu nome" autocomplete="name">
+            <input id="name" name="name" type="text" class="field__input" placeholder="Seu nome" autocomplete="off" required>
           </div>
           <span class="field__error" id="name-error" hidden></span>
         </div>
@@ -34,25 +34,34 @@
             <label for="email" class="field__label">E-mail</label>
           </div>
           <div class="field__control">
-            <input id="email" name="email" type="email" class="field__input" placeholder="seu@email.com" autocomplete="email">
+            <input id="email" name="email" type="email" class="field__input" placeholder="seu@email.com" autocomplete="off" required>
           </div>
           <span class="field__error" id="email-error" hidden></span>
         </div>
         <div class="field">
           <div class="field__row">
-            <label for="cpf" class="field__label">CPF</label>
+            <label for="cpf" class="field__label">CPF *</label>
           </div>
           <div class="field__control">
-            <input id="cpf" name="cpf" type="text" class="field__input" placeholder="000.000.000-00" autocomplete="off" inputmode="numeric">
+            <input id="cpf" name="cpf" type="text" class="field__input" placeholder="000.000.000-00" autocomplete="off" inputmode="numeric" required>
           </div>
           <span class="field__error" id="cpf-error" hidden></span>
+        </div>
+        <div class="field">
+          <div class="field__row">
+            <label for="phone" class="field__label">Telefone *</label>
+          </div>
+          <div class="field__control">
+            <input id="phone" name="phone" type="tel" class="field__input" placeholder="(00) 00000-0000" autocomplete="off" inputmode="numeric" required>
+          </div>
+          <span class="field__error" id="phone-error" hidden></span>
         </div>
         <div class="field">
           <div class="field__row">
             <label for="password" class="field__label">Senha</label>
           </div>
           <div class="field__control">
-            <input id="password" name="password" type="password" class="field__input field__input--icon" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+            <input id="password" name="password" type="password" class="field__input field__input--icon" placeholder="Mínimo 8 caracteres" autocomplete="off" required>
           <button type="button" class="field__toggle" data-toggle="password" aria-label="Mostrar senha"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="eye-off" d="M4 4l16 16" style="display:none"/></svg></button>
           </div>
           <span class="field__error" id="password-error" hidden></span>
@@ -62,7 +71,7 @@
             <label for="confirm" class="field__label">Confirmar senha</label>
           </div>
           <div class="field__control">
-            <input id="confirm" name="confirm" type="password" class="field__input" placeholder="Repita a senha" autocomplete="new-password">
+            <input id="confirm" name="confirm" type="password" class="field__input" placeholder="Repita a senha" autocomplete="off" required>
           </div>
           <span class="field__error" id="confirm-error" hidden></span>
         </div>

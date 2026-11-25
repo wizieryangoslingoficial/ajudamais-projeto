@@ -29,3 +29,6 @@ function showErrors(errors, ids) {
 }
 
 function value(id) { return document.getElementById(id).value; }
+
+var phoneInput = document.getElementById("phone");
+if (phoneInput) phoneInput.addEventListener("input", function () { phoneInput.value = formatPhone(phoneInput.value); });

@@ -924,6 +924,7 @@ function renderSolicitacoes(usuario) {
           <div>
             <label for="req-priority" style="display:block;font-size:13px;font-weight:600;color:#172033;margin-bottom:6px;">Prioridade</label>
             <select id="req-priority" style="width:100%;height:46px;padding:0 12px;border:1px solid #dfe6f0;border-radius:10px;font-size:14px;background:#fff;">
+              <option value="" selected disabled>Selecione a prioridade</option>
               <option value="normal">Normal</option>
               <option value="alta">Alta</option>
               <option value="urgente">Urgente</option>
@@ -950,7 +951,7 @@ function renderSolicitacoes(usuario) {
           <div id="req-items" style="display:flex;flex-direction:column;gap:10px;">
             <div class="req-item-row" style="display:grid;grid-template-columns:1fr 110px;gap:10px;">
               <input type="text" class="req-item-desc" placeholder="Ex.: Cesta básica" style="width:100%;height:44px;padding:0 14px;border:1px solid #dfe6f0;border-radius:10px;font-size:14px;">
-              <input type="number" class="req-item-qty" min="1" value="1" style="width:100%;height:44px;padding:0 12px;border:1px solid #dfe6f0;border-radius:10px;font-size:14px;">
+              <input type="number" class="req-item-qty" min="1" required placeholder="Qtd." style="width:100%;height:44px;padding:0 12px;border:1px solid #dfe6f0;border-radius:10px;font-size:14px;">
             </div>
           </div>
           <button type="button" id="req-add-item" style="margin-top:10px;background:#f2f5ff;color:#3154f4;border:1px solid #dce5ff;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;">+ Adicionar item</button>
@@ -1411,7 +1412,7 @@ function bindEvents(usuario) {
       row.className = 'req-item-row'
       row.style.cssText = 'display:grid;grid-template-columns:1fr 110px;gap:10px;'
       row.innerHTML = '<input type="text" class="req-item-desc" placeholder="Ex.: Cobertor" style="width:100%;height:44px;padding:0 14px;border:1px solid #dfe6f0;border-radius:10px;font-size:14px;">' +
-        '<input type="number" class="req-item-qty" min="1" value="1" style="width:100%;height:44px;padding:0 12px;border:1px solid #dfe6f0;border-radius:10px;font-size:14px;">'
+        '<input type="number" class="req-item-qty" min="1" required placeholder="Qtd." style="width:100%;height:44px;padding:0 12px;border:1px solid #dfe6f0;border-radius:10px;font-size:14px;">'
       container.appendChild(row)
     })
   }
@@ -1426,6 +1427,8 @@ function bindEvents(usuario) {
         showToast('Informe um título com pelo menos 5 caracteres.')
         return
       }
+      const priority = document.getElementById('req-priority').value
+      if (!priority) { showToast('Selecione a prioridade da solicitação.'); return }
       const items = Array.from(document.querySelectorAll('.req-item-row')).map((row) => ({
         description: row.querySelector('.req-item-desc').value.trim(),
         quantity_requested: Number(row.querySelector('.req-item-qty').value) || 0
@@ -1444,7 +1447,7 @@ function bindEvents(usuario) {
         title,
         description: document.getElementById('req-description').value.trim() || null,
         category_id: categoryId ? Number(categoryId) : null,
-        priority: document.getElementById('req-priority').value,
+        priority,
         city: document.getElementById('req-city').value.trim() || null,
         state_code: document.getElementById('req-uf').value.trim() || null,
         beneficiary_count: Number(document.getElementById('req-people').value) || null,

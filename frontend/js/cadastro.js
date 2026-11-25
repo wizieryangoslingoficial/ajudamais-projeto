@@ -2,7 +2,7 @@
 // O backend grava o usuário no MySQL e devolve a sessão (token).
 document.getElementById("form").addEventListener("submit", function (e) {
   e.preventDefault();
-  var ids = ["name", "email", "cpf", "password", "confirm"];
+  var ids = ["name", "email", "cpf", "phone", "password", "confirm"];
   var data = {};
   ids.forEach(function (id) { data[id] = value(id); });
   if (!showErrors(validateSignup(data), ids)) return;
@@ -14,6 +14,7 @@ document.getElementById("form").addEventListener("submit", function (e) {
     full_name: data.name.trim(),
     email: data.email.trim(),
     cpf: data.cpf,
+    phone: data.phone,
     password: data.password
   }).then(function (r) {
     if (button) button.disabled = false;

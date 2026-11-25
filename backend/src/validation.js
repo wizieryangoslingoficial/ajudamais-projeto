@@ -46,13 +46,16 @@ const cpfField = z.string().transform(onlyDigits).refine(isValidCpf, 'CPF invál
 const phoneField = z.string().optional().nullable()
   .transform((v) => (v == null || String(v).trim() === '' ? null : toE164(v)))
   .refine((v) => v === null || /^\+55\d{10,11}$/.test(v), 'Telefone inválido');
+const requiredPhoneField = z.string().trim().min(1, 'Telefone obrigatório')
+  .transform(toE164)
+  .refine((v) => typeof v === 'string' && /^\+55\d{10,11}$/.test(v), 'Telefone inválido');
 const emailField = z.string().trim().toLowerCase().email('E-mail inválido').max(254);
 
 export const registerSchema = z.object({
   full_name: z.string().trim().min(3, 'Informe seu nome completo').max(150),
   email: emailField,
   cpf: cpfField,
-  phone: phoneField,
+  phone: requiredPhoneField,
   password: z.string().min(8, 'A senha deve ter ao menos 8 caracteres').max(72),
   terms_accepted: z.literal(true, { errorMap: () => ({ message: 'É necessário aceitar os termos' }) }),
 });

@@ -62,7 +62,7 @@ describe('AjudaMais API', () => {
     const email = `admin.${rnd()}@teste.local`;
     const password = 'SenhaForte123';
     const reg = await api('POST', '/api/auth/register', {
-      body: { full_name: 'Admin Teste', email, cpf: makeCpf(), password, terms_accepted: true },
+      body: { full_name: 'Admin Teste', email, cpf: makeCpf(), phone: '(14) 99876-5432', password, terms_accepted: true },
     });
     assert.equal(reg.status, 201, JSON.stringify(reg.body));
     const promoted = await api('POST', '/api/_test/promote', {
@@ -97,9 +97,16 @@ describe('AjudaMais API', () => {
       assert.equal(r.status, 422);
     });
 
+    it('rejeita cadastro sem telefone', async () => {
+      const r = await api('POST', '/api/auth/register', {
+        body: { full_name: 'Sem Telefone', email: `semfone.${rnd()}@t.local`, cpf: makeCpf(), password, terms_accepted: true },
+      });
+      assert.equal(r.status, 422);
+    });
+
     it('rejeita cadastro sem aceitar termos', async () => {
       const r = await api('POST', '/api/auth/register', {
-        body: { full_name: 'Sem Termos', email: `y.${rnd()}@t.local`, cpf: makeCpf(), password },
+        body: { full_name: 'Sem Termos', email: `y.${rnd()}@t.local`, cpf: makeCpf(), phone: '(14) 99876-5432', password },
       });
       assert.equal(r.status, 422);
     });
@@ -122,14 +129,14 @@ describe('AjudaMais API', () => {
 
     it('impede e-mail duplicado', async () => {
       const r = await api('POST', '/api/auth/register', {
-        body: { full_name: 'Duplicada', email, cpf: makeCpf(), password, terms_accepted: true },
+        body: { full_name: 'Duplicada', email, cpf: makeCpf(), phone: '(14) 99876-5432', password, terms_accepted: true },
       });
       assert.equal(r.status, 409);
     });
 
     it('impede CPF duplicado', async () => {
       const r = await api('POST', '/api/auth/register', {
-        body: { full_name: 'Duplicada 2', email: `z.${rnd()}@t.local`, cpf, password, terms_accepted: true },
+        body: { full_name: 'Duplicada 2', email: `z.${rnd()}@t.local`, cpf, phone: '(14) 99876-5432', password, terms_accepted: true },
       });
       assert.equal(r.status, 409);
     });
@@ -247,7 +254,7 @@ describe('AjudaMais API', () => {
       it('usuário não-staff não edita a instituição de outro', async () => {
         const other = await api('POST', '/api/auth/register', {
           body: {
-            full_name: 'Outro Usuário', email: `outro.${rnd()}@t.local`, cpf: makeCpf(),
+            full_name: 'Outro Usuário', email: `outro.${rnd()}@t.local`, cpf: makeCpf(), phone: '(14) 99876-5432',
             password: 'SenhaForte123', terms_accepted: true,
           },
         });
@@ -360,7 +367,7 @@ describe('AjudaMais API', () => {
       it('outro usuário não vê a doação', async () => {
         const other = await api('POST', '/api/auth/register', {
           body: {
-            full_name: 'Curioso', email: `cur.${rnd()}@t.local`, cpf: makeCpf(),
+            full_name: 'Curioso', email: `cur.${rnd()}@t.local`, cpf: makeCpf(), phone: '(14) 99876-5432',
             password: 'SenhaForte123', terms_accepted: true,
           },
         });
@@ -392,7 +399,7 @@ describe('AjudaMais API', () => {
       it('doador não pode mudar status (só a instituição)', async () => {
         const other = await api('POST', '/api/auth/register', {
           body: {
-            full_name: 'Sem Staff', email: `ns.${rnd()}@t.local`, cpf: makeCpf(),
+            full_name: 'Sem Staff', email: `ns.${rnd()}@t.local`, cpf: makeCpf(), phone: '(14) 99876-5432',
             password: 'SenhaForte123', terms_accepted: true,
           },
         });
@@ -674,7 +681,7 @@ describe('AjudaMais API', () => {
     before(async () => {
       email = `excluir.${rnd()}@teste.local`;
       const r = await api('POST', '/api/auth/register', {
-        body: { full_name: 'Conta Descartável', email, cpf: makeCpf(), password, terms_accepted: true },
+        body: { full_name: 'Conta Descartável', email, cpf: makeCpf(), phone: '(14) 99876-5432', password, terms_accepted: true },
       });
       assert.equal(r.status, 201, JSON.stringify(r.body));
     });

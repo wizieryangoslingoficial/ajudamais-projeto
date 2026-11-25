@@ -173,11 +173,11 @@ ok('Alice continua sem papel de admin', sql(`SELECT COUNT(*) FROM user_roles ur 
 
 console.log('== 12. validação rejeita dados inválidos ==');
 const senhaCurta = await api('POST', '/api/auth/register', null, {
-  full_name: 'Curta', email: 'curta.' + rnd() + '@x.local', cpf: makeCpf(), password: '123', terms_accepted: true,
+  full_name: 'Curta', email: 'curta.' + rnd() + '@x.local', cpf: makeCpf(), phone: '(14) 99876-5432', password: '123', terms_accepted: true,
 });
 ok('cadastro com senha curta é recusado', senhaCurta.status === 422, senhaCurta.status);
 const semTermos = await api('POST', '/api/auth/register', null, {
-  full_name: 'Sem Termos', email: 'st.' + rnd() + '@x.local', cpf: makeCpf(), password: 'SenhaSegura123',
+  full_name: 'Sem Termos', email: 'st.' + rnd() + '@x.local', cpf: makeCpf(), phone: '(14) 99876-5432', password: 'SenhaSegura123',
   terms_accepted: false,
 });
 ok('cadastro sem aceitar os termos é recusado', semTermos.status === 422, semTermos.status);
